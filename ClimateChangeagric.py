@@ -4,7 +4,7 @@ The code was used to analyse how the agriculture indicators of climate affect
 West Africa.
 Created on Mon Dec  5 14:22:46 2022
 
-@author: matah
+@author: Omoregbe Olotu
 """
 
 

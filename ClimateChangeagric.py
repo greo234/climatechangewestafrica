@@ -12,7 +12,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from scipy import stats
+from scipy.stats.stats import pearsonr
 
 #Importing Agricultural land (% of land area) from Excel Sheet
 agrictolandarea = pd.read_excel("AgricLandToLAndArea.xls", skiprows=3,
@@ -302,8 +302,8 @@ SL = {'Agric. Land(% of Total Land': df1['Sierra Leone'],
 df_SL = pd.DataFrame(SL)
 print(df_SL)
 
-#correlation
-corr_SL = df_SL.corr()
+#calculating the pearsons correlation coeeficients using pandas
+corr_SL = df_SL.corr(method='pearson')
 print(corr_SL)
 
 #Defining a function to plot a correlation map for Sierra-Leone
@@ -317,7 +317,7 @@ def Plot_SL(data, title):
         data: A dataframe containing the data to plot.
         title: The title to use for the plot.
     """
-    # Calculate the correlation matrix.
+    # Correlation.
     corr = corr_SL
 
     # Create a figure and set the figure size.
@@ -333,6 +333,16 @@ def Plot_SL(data, title):
 #plots heatmap for Sierra-Leone
 Plot_SL(corr_SL, 'SIERRA LEONE')
 
+# P-Value test for the validity between the correlation Agric Value to GDP
+# and Agric Land (% of Land) for Sierra-Leone.
+  
+x = df1['Sierra Leone']
+y = df2['Sierra Leone']
+ 
+# The P-Value using Scipy to 2d.p   
+p = round(pearsonr(x, y)[1], 2)
+print('\n P-Value: \n', p)
+
 #creating dataset for Nigeria's correlation analysis
 Ngr = {'Agric. Land(% of Total Land': df1['Nigeria'], 
                  'Agric.(% of GDP)': df2['Nigeria'],
@@ -345,8 +355,8 @@ Ngr = {'Agric. Land(% of Total Land': df1['Nigeria'],
 df_Ngr = pd.DataFrame(Ngr)
 print(df_Ngr)
 
-#correlation 
-corr_Ngr = df_Ngr.corr()
+#calculating the pearsons correlation coeeficients using pandas#correlation 
+corr_Ngr = df_Ngr.corr(method='pearson')
 print(corr_Ngr)
 
 #Defining a function to plot a correlation map for Nigeria
@@ -360,7 +370,7 @@ def Plot_Ngr(data, title):
         data: A dataframe containing the data to plot.
         title: The title to use for the plot.
     """
-    # Calculate the correlation matrix.
+    # Correlation.
     corr = corr_Ngr
 
     # Create a figure and set the figure size.
@@ -376,6 +386,7 @@ def Plot_Ngr(data, title):
 #plots heatmap for Nigeria
 Plot_Ngr(corr_Ngr, 'NIGERIA')
 
+
 #creating dataset for Liberia's correlation analysis
 Lie = {'Agric. Land(% of Total Land': df1['Liberia'], 
                  'Agric.(% of GDP)': df2['Liberia'], 
@@ -388,8 +399,8 @@ Lie = {'Agric. Land(% of Total Land': df1['Liberia'],
 df_Lie = pd.DataFrame(Lie)
 print(df_Lie)
 
-#correlation
-corr_Lie = df_Lie.corr()
+#calculating the pearsons correlation coeeficients using pandas
+corr_Lie = df_Lie.corr(method='pearson')
 print(corr_Lie)
 
 #Defining a function to plot a correlation map for Nigeria
@@ -403,7 +414,7 @@ def Plot_Lie(data, title):
         data: A dataframe containing the data to plot.
         title: The title to use for the plot.
     """
-    # Calculate the correlation matrix.
+    # Correlation.
     corr = corr_Lie
 
     # Create a figure and set the figure size.

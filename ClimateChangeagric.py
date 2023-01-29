@@ -8,28 +8,45 @@ Created on Mon Dec  5 14:22:46 2022
 """
 
 
+#importing libraries
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats.stats import pearsonr
 
-#Importing Agricultural land (% of land area) from Excel Sheet
-agrictolandarea = pd.read_excel("AgricLandToLAndArea.xls", skiprows=3,
-                                usecols=[0, 44, 49, 54, 59, 63])
-print(agrictolandarea)
 
-#extracting West African States data
-agric_west = agrictolandarea.loc[[18, 19, 41, 47, 83, 85, 86, 87, 131, 158,
-                                  166, 173, 174, 207, 210, 232], :]
 
-# rounding off numbers to 2 significant figures
-pd.options.display.float_format = '{:,.2f}'.format
-print('\n Agricultural land (% of land area): \n', agric_west)
+file1 = "AgricLandToLAndArea.xls"
+file2 = "AgricValueAddedToGDP.xls"
+file3 = "CO2emission.xls"
+file4 = "TotalPopulation.xls"
+file5 = "ForestAreaToLAndArea.xls"
+file6 = "PopGrowth.xls"
 
-# Transposing the data frame
-agric_west.set_index('Country Name', inplace=True)
-df1 = agric_west.transpose()
+
+def read(filename):
+    """ Reads an Excel file extracting all West African
+    and returns the original dataframe and its transposed version.
+    
+    Parameters:
+        filename: The filename of the Excel file to be read.
+        
+    Returns:
+        [DataFrame, DataFrame Transposed]: The original dataframe
+        and its transposed version."""
+        
+    #Importing Agricultural land (% of land area) from Excel Sheet
+    data = pd.read_excel(filename, skiprows=3,
+                                    usecols=[0, 44, 49, 54, 59, 63])
+    
+    #extracting the west african states data
+    data = data.loc[[18, 19, 41, 47, 83, 85, 86, 87, 131, 158,
+                                      166, 173, 174, 207, 210, 232], :]
+    #resettin index
+    data.set_index('Country Name', inplace=True)
+    
+    return data, data.transpose()
 
 #Defining the function that plots bar chart for Agric. Land(% of Land Area)
 def plot_A(data):
@@ -66,31 +83,6 @@ def plot_A(data):
     plt.savefig("AgricLand.jpg", bbox_inches = 'tight', dpi = 140)
     plt.show()
 
-#Plotting the graph
-plot_A(agric_west)
-
-
-#Importing Agriculture, forestry, and fishing, 
-#value added (% of GDP) data from Excel Sheet
-
-agricvalue = pd.read_excel("AgricValueAddedToGDP.xls", skiprows=3,
-                           usecols=[0, 44, 49, 54, 59, 63])
-print(agricvalue)
-
-#extracting West African States data
-agricvalue_west = agricvalue.loc[[18, 19, 41, 47, 83, 85, 86, 87, 131, 158,
-                                  166, 173, 174, 207, 210, 232], :]
-
-#rounding off numbers to 2 significant figures
-pd.options.display.float_format = '{:,.2f}'.format
-print('\n Agriculture, forestry, and fishing, value added (% of GDP): \n', 
-      agricvalue_west)
-
-#Transposing the data frame
-agricvalue_west.set_index('Country Name', inplace=True)
-df2 = agricvalue_west.transpose()
-
-#Defining the function that plots the bar chart for Agric. component of the GDP
 def plot_B(data):
     """Plots a grouped bar chart for Agriculture, forestry, and fishing, 
     value added (% of GDP) data for West African States.
@@ -123,24 +115,7 @@ def plot_B(data):
                list(data.index.values), rotation=90)
     plt.savefig("AgricValue.jpg", bbox_inches = 'tight', dpi = 140)
     plt.show()
-
-#plotting the graph
-plot_B(agricvalue_west)
-
-#importing CO2 emissions (kt) data from Excel Sheet
-emission = pd.read_excel("CO2emission.xls", skiprows=3,
-                         usecols=[0, 44, 49, 54, 59, 63])
-
-#extracting West African States data
-emission_west = emission.loc[[18, 19, 41, 47, 83, 85, 86, 87, 131, 158,
-                                  166, 173, 174, 207, 210, 232], :]
-print('\n CO2 emissions (kt):\n' ,emission_west)
-
-# Transposing the data frame
-emission_west.set_index('Country Name', inplace=True)
-df3 = emission_west.transpose()
-
-#Defining the function that plots the line chart for CO2 emission 
+    
 def plot_C(data):
     """Plots a line chart for CO2 emissions (kt) data 
     for West African States.
@@ -157,23 +132,7 @@ def plot_C(data):
     plt.title(('CO2 emissions (kt)'), fontweight='bold')
     plt.savefig("emiss.jpg", bbox_inches='tight', dpi=140)
     plt.show()
-
-#plots the graph
-plot_C(df3)
-
-#Importing Total Population data from Excel Sheet
-popt = pd.read_excel("TotalPopulation.xls",
-                            skiprows=3, usecols=[0, 44, 49, 54, 59, 63])
-
-#extracting West African States data
-popt_west = popt.loc[[18, 19, 41, 47, 83, 85, 86, 87, 131, 158,
-                                  166, 173, 174, 207, 210, 232], :]
-print('\n Total population): \n', popt_west)
-
-# Transposing the data frame
-popt_west.set_index('Country Name', inplace=True)
-df4 = popt_west.transpose()
-
+    
 #Defining the function that plots the line chart for Total Population
 def plot_D(data):
     
@@ -193,25 +152,7 @@ def plot_D(data):
               fontweight='bold')
     plt.savefig("tot.jpg", bbox_inches='tight', dpi=140)
     plt.show()
-
-#plots the graph
-plot_D(df4)
-
-
-# Importing ForestAreaToLand Data from Excel Sheet
-forestarea = pd.read_excel("ForestAreaToLAndArea.xls",
-                           skiprows=3, usecols=[0, 44, 49, 54, 59, 63])
-
-#extracting West African States data
-forest_west = forestarea.loc[[18, 19, 41, 47, 83, 85, 86, 87, 131, 158,
-                                  166, 173, 174, 207, 210, 232], :]
-print('\n Forest area (% of land area): \n' ,forest_west)
-
-# Transposing the data frame
-forest_west.set_index('Country Name', inplace=True)
-df5 = forest_west.transpose()
-
-#Defining the function that plots the line chart fororest area (% of land area)
+    
 def plot_E(data):
     """Plots a line chart for Forest area (% of land area) data 
     for West African States.
@@ -228,29 +169,7 @@ def plot_E(data):
     plt.title(('Forest area (% of land area)'), fontweight='bold')
     plt.savefig("FOREST.jpg", bbox_inches='tight', dpi=140)
     plt.show()
-
-#plots the graph
-plot_E(df5)
-
-
-#Importing Population growth (annual %) data from Excel Sheet
-popgrowth = pd.read_excel("PopGrowth.xls", skiprows=3,
-                                usecols=[0, 44, 49, 54, 59, 63])
-print(agrictolandarea)
-
-# extracting West African States
-pop_west = popgrowth.loc[[18, 19, 41, 47, 83, 85, 86, 87, 131, 158,
-                                  166, 173, 174, 207, 210, 232], :]
-
-# rounding off numbers to 2 significant figures
-pd.options.display.float_format = '{:,.2f}'.format
-print('\n Population growth (annual %): \n', agric_west)
-
-# Transposing the data frame
-pop_west.set_index('Country Name', inplace=True)
-df6 = agric_west.transpose()
-
-
+    
 #Defining the function that plots the population growth
 def plot_F(data):
     
@@ -286,7 +205,36 @@ def plot_F(data):
     plt.savefig("Population growth.jpg", bbox_inches = 'tight', dpi = 140)
     plt.show()
 
-#plots the graph
+#Original and Transposed format for Agriculture Land to Area
+agric_west, agric_westTs = read(file1)
+df1 = agric_westTs
+
+#Original and Transposed format for Agriculture Value Added To GDP
+agricvalue, agricvalue_westTs = read(file2)
+df2 = agricvalue_westTs
+
+#Original and Transposed format for CO2emission
+emission_west, emission_westTs = read(file3)
+df3 = emission_westTs
+
+#Original and Transposed format for Total Population
+pop_west, pop_westTs = read(file4)
+df4 = pop_westTs
+
+#Original and Transposed format for Forest Area To Land
+forest_west, forest_westTs = read(file5)
+df5 = forest_westTs
+
+#Original and Transposed format for Population Growth
+growth_west, growth_westTs = read(file6)
+df6 = growth_westTs
+
+#graphplots for analysis
+plot_A(agric_west)
+plot_B(agricvalue)
+plot_C(df3)
+plot_D(df4)
+plot_E(df5)
 plot_F(pop_west)
 
 
